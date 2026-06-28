@@ -289,10 +289,12 @@
             margin-top: 2px;
         }
 
+        /* Yeni SKT Aç/Kapa Switch Tasarımı */
         .skt-container {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .skt-label {
@@ -301,7 +303,50 @@
             color: var(--text-muted);
         }
 
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 32px;
+            height: 18px;
+        }
+        
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 20px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
         .skt-input {
+            display: none; /* Varsayılan gizli */
             border: 1px solid #cbd5e1;
             padding: 4px 8px;
             border-radius: 6px;
@@ -309,6 +354,16 @@
             color: var(--text-main);
             outline: none;
             background: #f8fafc;
+            animation: fadeIn 0.3s;
+        }
+        
+        .skt-input.show {
+            display: block; /* Switch aktifse görünür */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-2px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .skt-input:focus {
@@ -469,8 +524,12 @@
         { id: 50, name: "Sızma Zeytinyağı", category: "bakliyat-temel", status: "mevcut", skt: "" }
     ];
 
-    let currentCategory = "all";
+    // Ürünlerde SKT anahtarını aktif/pasif tutacak özellik ekleyelim
+    products.forEach(p => {
+        p.sktActive = p.skt !== ""; 
+    });
 
+    let currentCategory = "all";
     const todayStr = "2026-06-28"; 
     const today = new Date(todayStr);
 
@@ -489,7 +548,7 @@
             if (searchVal && !item.name.toLowerCase().includes(searchVal)) return;
 
             let isExpired = false;
-            if (item.skt) {
+            if (item.sktActive && item.skt) {
                 const itemDate = new Date(item.skt);
                 if (itemDate < today && item.status === "mevcut") {
                     isExpired = true;
@@ -513,10 +572,14 @@
                 <div class="card-footer">
                     <div class="skt-container">
                         <span class="skt-label">SKT:</span>
-                        <input type="date" class="skt-input" value="${item.skt}" onchange="updateSKT(${item.id}, this.value)">
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleSKT(${item.id}, this.checked)" ${item.sktActive ? 'checked' : ''}>
+                            <span class="slider"></span>
+                        </label>
+                        <input type="date" class="skt-input ${item.sktActive ? 'show' : ''}" value="${item.skt}" onchange="updateSKT(${item.id}, this.value)">
                     </div>
                     <div class="expiry-alert">
-                        ⚠️ Ürün Bozuldu, Çöpe At!
+                        ⚠️ Ürün Bozuldu!
                     </div>
                 </div>
             `;
@@ -539,6 +602,22 @@
         const item = products.find(p => p.id === id);
         if (item) {
             item.status = newStatus;
+            renderProducts();
+            updateStats();
+        }
+    }
+
+    // SKT Açma / Kapatma (Toggle) Fonksiyonu
+    function toggleSKT(id, isChecked) {
+        const item = products.find(p => p.id === id);
+        if (item) {
+            item.sktActive = isChecked;
+            
+            // Eğer kapatıldıysa, hafızadaki tarihi de temizle (sıfırla)
+            if (!isChecked) {
+                item.skt = ""; 
+            }
+            
             renderProducts();
             updateStats();
         }
@@ -570,7 +649,7 @@
         
         let expired = 0;
         products.forEach(p => {
-            if (p.skt && p.status === 'mevcut') {
+            if (p.sktActive && p.skt && p.status === 'mevcut') {
                 const d = new Date(p.skt);
                 if (d < today) expired++;
             }
