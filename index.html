@@ -16,7 +16,7 @@
             --warning-color: #f59e0b;
             --border-radius: 16px;
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
 
@@ -36,7 +36,6 @@
             min-height: 100vh;
         }
 
-        /* Mobil Cihaz Konteyneri */
         .mobile-container {
             width: 100%;
             max-width: 480px;
@@ -45,370 +44,156 @@
             flex-direction: column;
             position: relative;
             min-height: 100vh;
-            padding-bottom: 30px;
         }
 
-        /* Sabit Üst Başlık Şeridi */
+        /* HEADER */
         header {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: #ffffff;
             padding: 20px 16px 16px 16px;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 50;
             box-shadow: var(--shadow-lg);
             border-bottom-left-radius: 24px;
             border-bottom-right-radius: 24px;
         }
 
         .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
         }
 
         .brand-title {
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #94a3b8;
+            font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8;
         }
         
         .brand-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
         }
 
         .logo-icon {
-            width: 28px;
-            height: 28px;
-            color: #3b82f6;
-            filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5));
+            width: 28px; height: 28px; color: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5));
         }
 
-        .app-name {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 1px;
-        }
+        .app-name { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: 1px; }
 
-        /* İstatistik Özet Paneli */
+        /* STATS */
         .summary-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            padding: 10px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            margin-top: 5px;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            background: rgba(255, 255, 255, 0.06); padding: 10px; border-radius: 12px; backdrop-filter: blur(10px);
         }
-
-        .summary-item {
-            text-align: center;
-        }
-
-        .summary-val {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
+        .summary-item { text-align: center; }
+        .summary-val { font-size: 16px; font-weight: 700; }
         .summary-val.total { color: #f8fafc; }
         .summary-val.missing { color: #fca5a5; }
         .summary-val.expired { color: #fde047; }
+        .summary-lbl { font-size: 10px; color: #94a3b8; margin-top: 2px; }
 
-        .summary-lbl {
-            font-size: 10px;
-            color: #94a3b8;
-            margin-top: 2px;
-        }
-
-        /* Arama Çubuğu */
-        .search-box {
-            margin: 14px 16px 8px 16px;
-            position: relative;
-        }
-
+        /* SEARCH & CATEGORIES */
+        .search-box { margin: 14px 16px 8px 16px; }
         .search-box input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            outline: none;
-            font-size: 14px;
-            background: var(--card-bg);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
+            width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #e2e8f0;
+            outline: none; font-size: 14px; box-shadow: var(--shadow-sm);
         }
+        .search-box input:focus { border-color: var(--accent-color); }
 
-        .search-box input:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-        }
-
-        /* Yatay Kategori Sekmeleri */
         .categories-wrapper {
-            overflow-x: auto;
-            padding: 4px 16px 12px 16px;
-            display: flex;
-            gap: 8px;
-            scrollbar-width: none;
+            overflow-x: auto; padding: 4px 16px 12px 16px; display: flex; gap: 8px; scrollbar-width: none;
         }
-        .categories-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
+        .categories-wrapper::-webkit-scrollbar { display: none; }
         .category-tab {
-            padding: 8px 16px;
-            background: var(--card-bg);
-            color: var(--text-muted);
-            border-radius: 20px;
-            white-space: nowrap;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
+            padding: 8px 16px; background: var(--card-bg); color: var(--text-muted);
+            border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
         }
+        .category-tab.active { background: var(--accent-color); color: #ffffff; }
 
-        .category-tab.active {
-            background: var(--accent-color);
-            color: #ffffff;
-            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-        }
-
-        /* Ürün Listesi Alanı */
-        .product-list {
-            padding: 0 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Ürün Kartı Tasarımı */
+        /* PRODUCT LIST */
+        .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 80px; }
+        .product-list { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
+        
         .product-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 14px;
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            position: relative;
+            background: var(--card-bg); border-radius: var(--border-radius); padding: 14px;
+            box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 10px;
             border-left: 5px solid var(--success-color);
-            transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
         }
+        .product-card.status-bitti { border-left-color: var(--danger-color); }
+        .product-card.is-expired { border-left-color: var(--warning-color); }
 
-        .product-card.status-bitti {
-            border-left-color: var(--danger-color);
-        }
+        .card-main { display: flex; justify-content: space-between; align-items: center; }
+        .product-name { font-size: 16px; font-weight: 700; color: var(--text-main); display: block; }
+        .product-cat { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
 
-        .product-card.is-expired {
-            border-left-color: var(--warning-color);
-            animation: pulse-border 2s infinite linear;
-        }
-
-        @keyframes pulse-border {
-            0% { border-left-color: var(--warning-color); }
-            50% { border-left-color: #ef4444; }
-            100% { border-left-color: var(--warning-color); }
-        }
-
-        .card-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .product-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-        }
-
-        .product-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .product-cat {
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Durum Seçici Buton Grubu */
-        .status-toggle-group {
-            display: flex;
-            background: #f1f5f9;
-            padding: 3px;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
+        /* BUTTONS */
+        .status-toggle-group { display: flex; background: #f1f5f9; padding: 3px; border-radius: 20px; border: 1px solid #e2e8f0; }
         .toggle-btn {
-            padding: 6px 14px;
-            border-radius: 18px;
-            font-size: 12px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: transparent;
-            color: var(--text-muted);
+            padding: 6px 14px; border-radius: 18px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; background: transparent; color: var(--text-muted);
+        }
+        .toggle-btn.active-mevcut { background: var(--success-color); color: #ffffff; }
+        .toggle-btn.active-bitti { background: var(--danger-color); color: #ffffff; }
+
+        /* EDIT MODE BUTTONS */
+        .delete-btn {
+            background: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; padding: 8px 16px; border-radius: 12px; font-weight: 700; cursor: pointer;
+        }
+        .add-product-btn {
+            background: var(--success-color); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin: 0 16px 12px 16px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: var(--shadow-md);
         }
 
-        .toggle-btn.active-mevcut {
-            background: var(--success-color);
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.2);
-        }
+        /* SKT SWITCH */
+        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #e2e8f0; padding-top: 8px; margin-top: 2px; }
+        .skt-container { display: flex; align-items: center; gap: 8px; }
+        .skt-label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
+        .switch { position: relative; display: inline-block; width: 32px; height: 18px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-color); }
+        input:checked + .slider:before { transform: translateX(14px); }
+        .skt-input { display: none; border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 6px; font-size: 11px; outline: none; }
+        .skt-input.show { display: block; }
+        .expiry-alert { display: none; background: #fef2f2; border: 1px solid #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+        .product-card.is-expired .expiry-alert { display: block; }
 
-        .toggle-btn.active-bitti {
-            background: var(--danger-color);
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+        /* BOTTOM NAV */
+        .bottom-nav {
+            position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--card-bg);
+            display: flex; justify-content: space-around; padding: 12px 0;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 100;
         }
-
-        /* SKT ve Uyarı Alanı */
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px dashed #e2e8f0;
-            padding-top: 8px;
-            margin-top: 2px;
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 700;
         }
+        .nav-item.active { color: var(--accent-color); }
+        .nav-icon { font-size: 22px; }
 
-        /* Yeni SKT Aç/Kapa Switch Tasarımı */
-        .skt-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
+        /* MODALS */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+            display: none; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(4px);
         }
-
-        .skt-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: var(--card-bg); width: 90%; max-width: 400px; border-radius: 20px; padding: 20px;
+            box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 16px;
         }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 32px;
-            height: 18px;
+        .modal-header { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;}
+        .close-btn { background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer; }
+        .modal-body { display: flex; flex-direction: column; gap: 12px; }
+        .modal-input, .modal-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 14px; outline: none; }
+        .modal-input:focus, .modal-select:focus { border-color: var(--accent-color); }
+        .primary-btn { background: var(--accent-color); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
+        
+        /* AI RESPONSE BOX */
+        .ai-response {
+            background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px;
+            font-size: 13px; color: #166534; line-height: 1.5; display: none; margin-top: 10px; font-weight: 500;
         }
         
-        .switch input { 
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e1;
-            transition: .3s;
-            border-radius: 20px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: var(--accent-color);
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(14px);
-        }
+        .loading-spinner { display: none; text-align: center; color: var(--accent-color); font-weight: 700; font-size: 14px; margin: 10px 0;}
 
-        .skt-input {
-            display: none; /* Varsayılan gizli */
-            border: 1px solid #cbd5e1;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: var(--text-main);
-            outline: none;
-            background: #f8fafc;
-            animation: fadeIn 0.3s;
-        }
-        
-        .skt-input.show {
-            display: block; /* Switch aktifse görünür */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-2px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .skt-input:focus {
-            border-color: var(--accent-color);
-        }
-
-        /* Kritik Bozulma Uyarısı */
-        .expiry-alert {
-            display: none;
-            background: #fef2f2;
-            border: 1px solid #fee2e2;
-            color: #b91c1c;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            align-items: center;
-            gap: 4px;
-            animation: shake 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(2px); }
-        }
-
-        .product-card.is-expired .expiry-alert {
-            display: flex;
-        }
-
-        /* Footer İmza */
-        footer {
-            margin-top: auto;
-            padding: 24px 16px 10px 16px;
-            text-align: center;
-            font-size: 11px;
-            color: #94a3b8;
-            font-weight: 500;
-        }
-
-        .footer-brand {
-            font-weight: 700;
-            color: #64748b;
-            letter-spacing: 0.5px;
-        }
+        /* FOOTER */
+        footer { padding: 10px; text-align: center; font-size: 11px; color: #94a3b8; }
+        .footer-brand { font-weight: 700; color: #64748b; }
     </style>
 </head>
 <body>
@@ -444,98 +229,129 @@
         </div>
     </header>
 
-    <!-- Arama ve Filtreleme -->
-    <div class="search-box">
-        <input type="text" id="search-input" placeholder="Ürün adı ara..." oninput="filterProducts()">
+    <div class="scroll-area">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Ürün adı ara..." oninput="filterProducts()">
+        </div>
+
+        <div class="categories-wrapper" id="categories-tabs">
+            <div class="category-tab active" onclick="switchCategory('all', this)">Tümü</div>
+            <div class="category-tab" onclick="switchCategory('sebze', this)">Sebzeler</div>
+            <div class="category-tab" onclick="switchCategory('meyve', this)">Meyveler</div>
+            <div class="category-tab" onclick="switchCategory('sut-sarkuteri', this)">Süt & Şarküteri</div>
+            <div class="category-tab" onclick="switchCategory('icecek', this)">İçecekler</div>
+            <div class="category-tab" onclick="switchCategory('bakliyat-temel', this)">Temel Gıda</div>
+        </div>
+
+        <!-- YENİ ÜRÜN EKLE BUTONU (Sadece Düzenle Modunda Görünür) -->
+        <button id="add-btn-container" class="add-product-btn" style="display: none;" onclick="openAddModal()">
+            <span>➕</span> Yeni Ürün Ekle
+        </button>
+
+        <div class="product-list" id="product-container">
+            <!-- JS ile dolacak -->
+        </div>
+        <footer>
+            <p><span class="footer-brand">Create by Tonoz</span> &copy; 2026</p>
+        </footer>
     </div>
 
-    <!-- Kategori Menüsü -->
-    <div class="categories-wrapper" id="categories-tabs">
-        <div class="category-tab active" onclick="switchCategory('all', this)">Tümü</div>
-        <div class="category-tab" onclick="switchCategory('sebze', this)">Sebzeler</div>
-        <div class="category-tab" onclick="switchCategory('meyve', this)">Meyveler</div>
-        <div class="category-tab" onclick="switchCategory('sut-sarkuteri', this)">Süt & Şarküteri</div>
-        <div class="category-tab" onclick="switchCategory('icecek', this)">İçecekler</div>
-        <div class="category-tab" onclick="switchCategory('bakliyat-temel', this)">Temel Gıda</div>
+    <!-- ALT NAVİGASYON (BOTTOM NAV) -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-home" onclick="setMode('home')">
+            <span class="nav-icon">🏠</span>
+            <span>Ana Sayfa</span>
+        </div>
+        <div class="nav-item" id="nav-edit" onclick="setMode('edit')">
+            <span class="nav-icon">⚙️</span>
+            <span>Düzenle</span>
+        </div>
+        <div class="nav-item" onclick="openAIModal()">
+            <span class="nav-icon">🤖</span>
+            <span>AI Şef</span>
+        </div>
     </div>
+</div>
 
-    <!-- Dinamik Ürün Listesi -->
-    <div class="product-list" id="product-container">
-        <!-- JS ile doldurulacak -->
+<!-- MODAL: YENİ ÜRÜN EKLE -->
+<div class="modal-overlay" id="add-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>Yeni Ürün Ekle</span>
+            <button class="close-btn" onclick="closeAddModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="text" id="new-prod-name" class="modal-input" placeholder="Ürün Adı (Örn: Çikolata)">
+            <select id="new-prod-cat" class="modal-select">
+                <option value="sebze">Sebzeler</option>
+                <option value="meyve">Meyveler</option>
+                <option value="sut-sarkuteri">Süt & Şarküteri</option>
+                <option value="icecek">İçecekler</option>
+                <option value="bakliyat-temel">Temel Gıda</option>
+            </select>
+            <button class="primary-btn" onclick="saveNewProduct()">Kaydet ve Listeye Ekle</button>
+        </div>
     </div>
+</div>
 
-    <footer>
-        <p><span class="footer-brand">Create by Tonoz</span> &copy; 2026</p>
-    </footer>
+<!-- MODAL: AI ŞEF -->
+<div class="modal-overlay" id="ai-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>🤖 Frigeton AI Şef</span>
+            <button class="close-btn" onclick="closeAIModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 13px; color: #64748b;">Dolabınızdaki mevcut malzemelerle yapay zekadan tarif önerisi alın.</p>
+            <select id="meal-type" class="modal-select">
+                <option value="Kahvaltı">🍳 Sabah / Kahvaltı</option>
+                <option value="Öğle Yemeği">🍲 Öğle Yemeği</option>
+                <option value="Akşam Yemeği">🍽️ Akşam Yemeği</option>
+                <option value="Tatlı/Atıştırmalık">🍰 Tatlı / Atıştırmalık</option>
+            </select>
+            <button class="primary-btn" onclick="getAISuggestion()">Öneri İstiyorum!</button>
+            
+            <div class="loading-spinner" id="ai-loading">Yapay Zeka Analiz Ediyor... ⏳</div>
+            <div class="ai-response" id="ai-response-box"></div>
+        </div>
+    </div>
 </div>
 
 <script>
-    // Yaklaşık 50 adet optimize edilmiş ürün verisi (Simüle veri havuzu)
-    let products = [
-        { id: 1, name: "Domates", category: "sebze", status: "mevcut", skt: "" },
-        { id: 2, name: "Salatalık", category: "sebze", status: "mevcut", skt: "" },
-        { id: 3, name: "Biber", category: "sebze", status: "bitti", skt: "" },
-        { id: 4, name: "Marul", category: "sebze", status: "mevcut", skt: "2026-06-29" },
-        { id: 5, name: "Maydanoz", category: "sebze", status: "mevcut", skt: "2026-06-24" }, 
-        { id: 6, name: "Havuç", category: "sebze", status: "mevcut", skt: "" },
-        { id: 7, name: "Patates", category: "sebze", status: "mevcut", skt: "" },
-        { id: 8, name: "Kuru Soğan", category: "sebze", status: "mevcut", skt: "" },
-        { id: 9, name: "Sarımsak", category: "sebze", status: "mevcut", skt: "" },
-        { id: 10, name: "Ispanak", category: "sebze", status: "bitti", skt: "" },
-        { id: 11, name: "Kabak", category: "sebze", status: "mevcut", skt: "" },
-        { id: 12, name: "Patlıcan", category: "sebze", status: "mevcut", skt: "" },
-        { id: 13, name: "Elma", category: "meyve", status: "mevcut", skt: "" },
-        { id: 14, name: "Muz", category: "meyve", status: "mevcut", skt: "2026-07-02" },
-        { id: 15, name: "Portakal", category: "meyve", status: "bitti", skt: "" },
-        { id: 16, name: "Çilek", category: "meyve", status: "mevcut", skt: "2026-06-25" }, 
-        { id: 17, name: "Limon", category: "meyve", status: "mevcut", skt: "" },
-        { id: 18, name: "Karpuz", category: "meyve", status: "mevcut", skt: "" },
-        { id: 19, name: "Kavun", category: "meyve", status: "bitti", skt: "" },
-        { id: 20, name: "Üzüm", category: "meyve", status: "mevcut", skt: "" },
-        { id: 21, name: "Şeftali", category: "meyve", status: "mevcut", skt: "" },
-        { id: 22, name: "Erik", category: "meyve", status: "mevcut", skt: "" },
-        { id: 23, name: "Tam Yağlı Süt", category: "sut-sarkuteri", status: "mevcut", skt: "2026-06-26" },
-        { id: 24, name: "Organik Yumurta", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-10" },
-        { id: 25, name: "Beyaz Peynir", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-15" },
-        { id: 26, name: "Kaşar Peyniri", category: "sut-sarkuteri", status: "mevcut", skt: "" },
-        { id: 27, name: "Süzme Yoğurt", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-05" },
-        { id: 28, name: "Tereyağı", category: "sut-sarkuteri", status: "mevcut", skt: "" },
-        { id: 29, name: "Siyah Zeytin", category: "sut-sarkuteri", status: "mevcut", skt: "" },
-        { id: 30, name: "Dana Salam", category: "sut-sarkuteri", status: "bitti", skt: "" },
-        { id: 31, name: "Piliç Sosis", category: "sut-sarkuteri", status: "mevcut", skt: "2026-06-30" },
-        { id: 32, name: "Sıvı Krema", category: "sut-sarkuteri", status: "bitti", skt: "" },
-        { id: 33, name: "Kola 1L", category: "icecek", status: "bitti", skt: "" },
-        { id: 34, name: "Fanta", category: "icecek", status: "mevcut", skt: "" },
-        { id: 35, name: "Gazoz", category: "icecek", status: "mevcut", skt: "" },
-        { id: 36, name: "Doğal Kaynak Suyu", category: "icecek", status: "mevcut", skt: "" },
-        { id: 37, name: "Maden Suyu", category: "icecek", status: "mevcut", skt: "" },
-        { id: 38, name: "Ayran", category: "icecek", status: "mevcut", skt: "2026-07-01" },
-        { id: 39, name: "Portakal Suyu", category: "icecek", status: "bitti", skt: "" },
-        { id: 40, name: "Soğuk Çay", category: "icecek", status: "mevcut", skt: "" },
-        { id: 41, name: "Sütlü Kahve", category: "icecek", status: "mevcut", skt: "2026-06-28" },
-        { id: 42, name: "Pilavlık Pirinç", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 43, name: "Kırmızı Mercimek", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 44, name: "Koçbaşı Nohut", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 45, name: "Burgu Makarna", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 46, name: "Buğday Unu", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 47, name: "Toz Şeker", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 48, name: "İyotlu Sofra Tuzu", category: "bakliyat-temel", status: "mevcut", skt: "" },
-        { id: 49, name: "Ayçiçek Yağı", category: "bakliyat-temel", status: "bitti", skt: "" },
-        { id: 50, name: "Sızma Zeytinyağı", category: "bakliyat-temel", status: "mevcut", skt: "" }
+    // VARSAYILAN BAŞLANGIÇ LİSTESİ (Eğer hafızada yoksa bu yüklenir)
+    const defaultProducts = [
+        { id: 1, name: "Domates", category: "sebze", status: "mevcut", skt: "", sktActive: false },
+        { id: 2, name: "Salatalık", category: "sebze", status: "mevcut", skt: "", sktActive: false },
+        { id: 3, name: "Tam Yağlı Süt", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-02", sktActive: true },
+        { id: 4, name: "Organik Yumurta", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-10", sktActive: true },
+        { id: 5, name: "Kola 1L", category: "icecek", status: "bitti", skt: "", sktActive: false },
+        { id: 6, name: "Makarna", category: "bakliyat-temel", status: "mevcut", skt: "", sktActive: false }
     ];
 
-    // Ürünlerde SKT anahtarını aktif/pasif tutacak özellik ekleyelim
-    products.forEach(p => {
-        p.sktActive = p.skt !== ""; 
-    });
+    // LocalStorage'dan veriyi al, yoksa varsayılanı kullan
+    let products = JSON.parse(localStorage.getItem('frigeton_data')) || defaultProducts;
+    
+    function saveData() {
+        localStorage.setItem('frigeton_data', JSON.stringify(products));
+        updateStats();
+    }
 
     let currentCategory = "all";
-    const todayStr = "2026-06-28"; 
-    const today = new Date(todayStr);
+    let isEditMode = false;
+    const today = new Date("2026-06-28"); 
 
     function initApp() {
         renderProducts();
         updateStats();
+    }
+
+    // MOD SEÇİMİ (Ana Sayfa vs Düzenle)
+    function setMode(mode) {
+        isEditMode = (mode === 'edit');
+        document.getElementById('nav-home').classList.toggle('active', !isEditMode);
+        document.getElementById('nav-edit').classList.toggle('active', isEditMode);
+        document.getElementById('add-btn-container').style.display = isEditMode ? 'flex' : 'none';
+        renderProducts();
     }
 
     function renderProducts() {
@@ -550,111 +366,138 @@
             let isExpired = false;
             if (item.sktActive && item.skt) {
                 const itemDate = new Date(item.skt);
-                if (itemDate < today && item.status === "mevcut") {
-                    isExpired = true;
-                }
+                if (itemDate < today && item.status === "mevcut") isExpired = true;
             }
 
             const card = document.createElement("div");
             card.className = `product-card ${item.status === 'bitti' ? 'status-bitti' : ''} ${isExpired ? 'is-expired' : ''}`;
             
-            card.innerHTML = `
-                <div class="card-main">
-                    <div class="product-info">
-                        <span class="product-name">${item.name}</span>
-                        <span class="product-cat">${getCategoryName(item.category)}</span>
+            // DÜZENLEME MODU AÇIKSA KART İÇERİĞİ DEĞİŞİR
+            if (isEditMode) {
+                card.innerHTML = `
+                    <div class="card-main">
+                        <div class="product-info">
+                            <span class="product-name">${item.name}</span>
+                            <span class="product-cat">${getCategoryName(item.category)}</span>
+                        </div>
+                        <button class="delete-btn" onclick="deleteProduct(${item.id})">🗑️ Sil</button>
                     </div>
-                    <div class="status-toggle-group">
-                        <button class="toggle-btn ${item.status === 'mevcut' ? 'active-mevcut' : ''}" onclick="setStatus(${item.id}, 'mevcut')">Mevcut</button>
-                        <button class="toggle-btn ${item.status === 'bitti' ? 'active-bitti' : ''}" onclick="setStatus(${item.id}, 'bitti')">Bitti</button>
+                `;
+            } else {
+                // NORMAL MOD
+                card.innerHTML = `
+                    <div class="card-main">
+                        <div class="product-info">
+                            <span class="product-name">${item.name}</span>
+                            <span class="product-cat">${getCategoryName(item.category)}</span>
+                        </div>
+                        <div class="status-toggle-group">
+                            <button class="toggle-btn ${item.status === 'mevcut' ? 'active-mevcut' : ''}" onclick="setStatus(${item.id}, 'mevcut')">Mevcut</button>
+                            <button class="toggle-btn ${item.status === 'bitti' ? 'active-bitti' : ''}" onclick="setStatus(${item.id}, 'bitti')">Bitti</button>
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <div class="skt-container">
-                        <span class="skt-label">SKT:</span>
-                        <label class="switch">
-                            <input type="checkbox" onchange="toggleSKT(${item.id}, this.checked)" ${item.sktActive ? 'checked' : ''}>
-                            <span class="slider"></span>
-                        </label>
-                        <input type="date" class="skt-input ${item.sktActive ? 'show' : ''}" value="${item.skt}" onchange="updateSKT(${item.id}, this.value)">
+                    <div class="card-footer">
+                        <div class="skt-container">
+                            <span class="skt-label">SKT:</span>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleSKT(${item.id}, this.checked)" ${item.sktActive ? 'checked' : ''}>
+                                <span class="slider"></span>
+                            </label>
+                            <input type="date" class="skt-input ${item.sktActive ? 'show' : ''}" value="${item.skt}" onchange="updateSKT(${item.id}, this.value)">
+                        </div>
+                        <div class="expiry-alert">⚠️ Bozuldu!</div>
                     </div>
-                    <div class="expiry-alert">
-                        ⚠️ Ürün Bozuldu!
-                    </div>
-                </div>
-            `;
+                `;
+            }
             container.appendChild(card);
         });
     }
 
+    // YENİ ÜRÜN EKLEME İŞLEMLERİ
+    function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
+    function closeAddModal() { 
+        document.getElementById('add-modal').classList.remove('active'); 
+        document.getElementById('new-prod-name').value = '';
+    }
+    
+    function saveNewProduct() {
+        const name = document.getElementById('new-prod-name').value.trim();
+        const cat = document.getElementById('new-prod-cat').value;
+        if (!name) return alert("Lütfen bir ürün adı girin!");
+        
+        const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+        
+        products.unshift({
+            id: newId, name: name, category: cat, status: "mevcut", skt: "", sktActive: false
+        });
+        
+        saveData();
+        renderProducts();
+        closeAddModal();
+    }
+
+    // ÜRÜN SİLME
+    function deleteProduct(id) {
+        if(confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
+            products = products.filter(p => p.id !== id);
+            saveData();
+            renderProducts();
+        }
+    }
+
+    // AI ŞEF İŞLEMLERİ
+    function openAIModal() { 
+        document.getElementById('ai-modal').classList.add('active'); 
+        document.getElementById('ai-response-box').style.display = 'none';
+    }
+    function closeAIModal() { document.getElementById('ai-modal').classList.remove('active'); }
+    
+    function getAISuggestion() {
+        const mealType = document.getElementById('meal-type').value;
+        const availableItems = products.filter(p => p.status === 'mevcut').map(p => p.name);
+        
+        const loading = document.getElementById('ai-loading');
+        const responseBox = document.getElementById('ai-response-box');
+        
+        responseBox.style.display = 'none';
+        loading.style.display = 'block';
+
+        // ESP32'de buraya gerçek API (Fetch) isteği gelecek. Şu an simüle ediyoruz.
+        setTimeout(() => {
+            loading.style.display = 'none';
+            responseBox.style.display = 'block';
+            
+            if(availableItems.length < 2) {
+                responseBox.innerHTML = `⚠️ Dolabınızda yeterli malzeme yok. Markete gitme vakti gelmiş olabilir!`;
+                return;
+            }
+
+            // Basit Simülasyon Mantığı
+            const itemsText = availableItems.slice(0, 5).join(", ") + (availableItems.length > 5 ? " ve daha fazlası" : "");
+            
+            responseBox.innerHTML = `
+                <b>${mealType} Önerisi:</b><br><br>
+                Dolabınızdaki <b>${itemsText}</b> kullanılarak oluşturulan şefin tavsiyesi:<br><br>
+                <i>"Mevcut malzemeleriniz ${mealType} için oldukça uygun! Yaratıcı bir tabak hazırlayabilir, eksik olanları 'Bitenler' listesine ekleyebilirsiniz."</i><br><br>
+                <small style="color:var(--text-muted);">(Not: Bu bir simülasyondur. Gerçek projede buraya Gemini AI veya ChatGPT API bağlanarak gerçek yemek tarifleri çekilecektir.)</small>
+            `;
+        }, 1500); // 1.5 saniye bekleme efekti
+    }
+
     function getCategoryName(cat) {
-        const names = {
-            "sebze": "Sebzeler",
-            "meyve": "Meyveler",
-            "sut-sarkuteri": "Süt & Şarküteri",
-            "icecek": "İçecekler",
-            "bakliyat-temel": "Temel Gıda"
-        };
+        const names = { "sebze": "Sebzeler", "meyve": "Meyveler", "sut-sarkuteri": "Süt & Şarküteri", "icecek": "İçecekler", "bakliyat-temel": "Temel Gıda" };
         return names[cat] || cat;
     }
-
-    function setStatus(id, newStatus) {
-        const item = products.find(p => p.id === id);
-        if (item) {
-            item.status = newStatus;
-            renderProducts();
-            updateStats();
-        }
-    }
-
-    // SKT Açma / Kapatma (Toggle) Fonksiyonu
-    function toggleSKT(id, isChecked) {
-        const item = products.find(p => p.id === id);
-        if (item) {
-            item.sktActive = isChecked;
-            
-            // Eğer kapatıldıysa, hafızadaki tarihi de temizle (sıfırla)
-            if (!isChecked) {
-                item.skt = ""; 
-            }
-            
-            renderProducts();
-            updateStats();
-        }
-    }
-
-    function updateSKT(id, newDate) {
-        const item = products.find(p => p.id === id);
-        if (item) {
-            item.skt = newDate;
-            renderProducts();
-            updateStats();
-        }
-    }
-
-    function switchCategory(cat, element) {
-        currentCategory = cat;
-        document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
-        element.classList.add('active');
-        renderProducts();
-    }
-
-    function filterProducts() {
-        renderProducts();
-    }
-
+    function setStatus(id, newStatus) { const item = products.find(p => p.id === id); if (item) { item.status = newStatus; saveData(); renderProducts(); } }
+    function toggleSKT(id, isChecked) { const item = products.find(p => p.id === id); if (item) { item.sktActive = isChecked; if (!isChecked) item.skt = ""; saveData(); renderProducts(); } }
+    function updateSKT(id, newDate) { const item = products.find(p => p.id === id); if (item) { item.skt = newDate; saveData(); renderProducts(); } }
+    function switchCategory(cat, element) { currentCategory = cat; document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active')); element.classList.add('active'); renderProducts(); }
+    function filterProducts() { renderProducts(); }
     function updateStats() {
         const total = products.length;
         const missing = products.filter(p => p.status === 'bitti').length;
-        
         let expired = 0;
-        products.forEach(p => {
-            if (p.sktActive && p.skt && p.status === 'mevcut') {
-                const d = new Date(p.skt);
-                if (d < today) expired++;
-            }
-        });
-
+        products.forEach(p => { if (p.sktActive && p.skt && p.status === 'mevcut') { if (new Date(p.skt) < today) expired++; } });
         document.getElementById("stat-total").innerText = total;
         document.getElementById("stat-missing").innerText = missing;
         document.getElementById("stat-expired").innerText = expired;
