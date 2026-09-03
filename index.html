@@ -1,510 +1,335 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Frigeton - Akıllı Buzdolabı</title>
-    <style>
-        :root {
-            --bg-primary: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --accent-color: #3b82f6;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --border-radius: 16px;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Canlı Pano Kontrol Merkezi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { 
+      --primary: #4f46e5; 
+      --primary-hover: #4338ca; 
+      --bg-color: #f3f4f6; 
+      --card-bg: #ffffff; 
+      --text-main: #1f2937; 
+      --text-muted: #6b7280; 
+    }
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%); 
+      margin: 0; 
+      padding: 20px; 
+      box-sizing: border-box; 
+    }
+    
+    .main-wrapper { 
+      display: flex; 
+      gap: 30px; 
+      width: 100%; 
+      max-width: 900px; 
+      flex-wrap: wrap; 
+    }
+    
+    .card { 
+      background: var(--card-bg); 
+      padding: 40px; 
+      border-radius: 24px; 
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08); 
+      flex: 1; 
+      min-width: 280px; /* Mobilde taşmaması için 300'den 280'e çekildi */
+      text-align: center; 
+      display: flex; 
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    
+    h2 { margin: 0 0 8px 0; color: var(--text-main); font-weight: 800; font-size: 24px; }
+    p.subtitle { color: var(--text-muted); margin: 0 0 30px 0; font-size: 14px; }
+    
+    .upload-area { 
+      border: 2px dashed #cbd5e1; 
+      border-radius: 16px; 
+      padding: 40px 20px; 
+      cursor: pointer; 
+      background: #f8fafc; 
+      position: relative; 
+      margin-bottom: 24px; 
+      transition: all 0.3s; 
+    }
+    .upload-area:hover { border-color: var(--primary); background: #eef2ff; }
+    .upload-icon { width: 48px; height: 48px; fill: #9ca3af; margin-bottom: 12px; }
+    .upload-text { color: var(--text-main); font-weight: 600; font-size: 15px; }
+    .upload-subtext { color: var(--text-muted); font-size: 12px; }
+    
+    input[type="file"] { position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer; }
+    
+    #preview-container { display: none; margin-bottom: 20px; }
+    #preview { max-width: 100%; max-height: 180px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    
+    .btn { 
+      color: white; 
+      border: none; 
+      padding: 16px 24px; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      font-size: 16px; 
+      font-weight: 600; 
+      width: 100%; 
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15); 
+      transition: all 0.2s ease; 
+      font-family: 'Inter', sans-serif; 
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
+    .btn:disabled { background: #9ca3af !important; cursor: not-allowed; transform: none; box-shadow: none; }
+    
+    .btn-send { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); }
+    .btn-stop { background: linear-gradient(135deg, #ef4444, #dc2626); margin-top: auto; }
+    .btn-start { background: linear-gradient(135deg, #10b981, #059669); margin-top: auto; display: none; }
+    
+    .live-screen-box { 
+      margin-top: 20px; 
+      background: #111827; 
+      border-radius: 12px; 
+      padding: 10px; 
+      height: 200px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      position: relative; 
+      overflow: hidden; 
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); 
+      margin-bottom: 20px; 
+    }
+    .live-screen-box::before { content: "Yükleniyor..."; color: #4b5563; position: absolute; font-size: 14px; z-index: 1; }
+    #live-screen-img { max-width: 100%; max-height: 100%; z-index: 2; border-radius: 8px; display: none; transition: opacity 0.3s ease; }
+    
+    .status-dot { 
+      display: inline-block; 
+      width: 10px; 
+      height: 10px; 
+      background: #10b981; 
+      border-radius: 50%; 
+      margin-right: 8px; 
+      box-shadow: 0 0 8px #10b981; 
+      animation: pulse 2s infinite; 
+    }
+    .status-dot.offline { background: #ef4444; box-shadow: 0 0 8px #ef4444; animation: none; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .mobile-container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            min-height: 100vh;
-        }
-
-        /* HEADER */
-        header {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: #ffffff;
-            padding: 20px 16px 16px 16px;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: var(--shadow-lg);
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
-        }
-
-        .header-top {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
-        }
-
-        .brand-title {
-            font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8;
-        }
-        
-        .brand-row {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
-        }
-
-        .logo-icon {
-            width: 28px; height: 28px; color: #3b82f6; filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.5));
-        }
-
-        .app-name { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: 1px; }
-
-        /* STATS */
-        .summary-bar {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-            background: rgba(255, 255, 255, 0.06); padding: 10px; border-radius: 12px; backdrop-filter: blur(10px);
-        }
-        .summary-item { text-align: center; }
-        .summary-val { font-size: 16px; font-weight: 700; }
-        .summary-val.total { color: #f8fafc; }
-        .summary-val.missing { color: #fca5a5; }
-        .summary-val.expired { color: #fde047; }
-        .summary-lbl { font-size: 10px; color: #94a3b8; margin-top: 2px; }
-
-        /* SEARCH & CATEGORIES */
-        .search-box { margin: 14px 16px 8px 16px; }
-        .search-box input {
-            width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #e2e8f0;
-            outline: none; font-size: 14px; box-shadow: var(--shadow-sm);
-        }
-        .search-box input:focus { border-color: var(--accent-color); }
-
-        .categories-wrapper {
-            overflow-x: auto; padding: 4px 16px 12px 16px; display: flex; gap: 8px; scrollbar-width: none;
-        }
-        .categories-wrapper::-webkit-scrollbar { display: none; }
-        .category-tab {
-            padding: 8px 16px; background: var(--card-bg); color: var(--text-muted);
-            border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
-        }
-        .category-tab.active { background: var(--accent-color); color: #ffffff; }
-
-        /* PRODUCT LIST */
-        .scroll-area { flex: 1; overflow-y: auto; padding-bottom: 80px; }
-        .product-list { padding: 0 16px; display: flex; flex-direction: column; gap: 12px; }
-        
-        .product-card {
-            background: var(--card-bg); border-radius: var(--border-radius); padding: 14px;
-            box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 10px;
-            border-left: 5px solid var(--success-color);
-        }
-        .product-card.status-bitti { border-left-color: var(--danger-color); }
-        .product-card.is-expired { border-left-color: var(--warning-color); }
-
-        .card-main { display: flex; justify-content: space-between; align-items: center; }
-        .product-name { font-size: 16px; font-weight: 700; color: var(--text-main); display: block; }
-        .product-cat { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
-
-        /* BUTTONS */
-        .status-toggle-group { display: flex; background: #f1f5f9; padding: 3px; border-radius: 20px; border: 1px solid #e2e8f0; }
-        .toggle-btn {
-            padding: 6px 14px; border-radius: 18px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; background: transparent; color: var(--text-muted);
-        }
-        .toggle-btn.active-mevcut { background: var(--success-color); color: #ffffff; }
-        .toggle-btn.active-bitti { background: var(--danger-color); color: #ffffff; }
-
-        /* EDIT MODE BUTTONS */
-        .delete-btn {
-            background: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; padding: 8px 16px; border-radius: 12px; font-weight: 700; cursor: pointer;
-        }
-        .add-product-btn {
-            background: var(--success-color); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; margin: 0 16px 12px 16px; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: var(--shadow-md);
-        }
-
-        /* SKT SWITCH */
-        .card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #e2e8f0; padding-top: 8px; margin-top: 2px; }
-        .skt-container { display: flex; align-items: center; gap: 8px; }
-        .skt-label { font-size: 11px; font-weight: 600; color: var(--text-muted); }
-        .switch { position: relative; display: inline-block; width: 32px; height: 18px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent-color); }
-        input:checked + .slider:before { transform: translateX(14px); }
-        .skt-input { display: none; border: 1px solid #cbd5e1; padding: 4px 8px; border-radius: 6px; font-size: 11px; outline: none; }
-        .skt-input.show { display: block; }
-        .expiry-alert { display: none; background: #fef2f2; border: 1px solid #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; }
-        .product-card.is-expired .expiry-alert { display: block; }
-
-        /* BOTTOM NAV */
-        .bottom-nav {
-            position: fixed; bottom: 0; width: 100%; max-width: 480px; background: var(--card-bg);
-            display: flex; justify-content: space-around; padding: 12px 0;
-            box-shadow: 0 -4px 15px rgba(0,0,0,0.05); border-top-left-radius: 24px; border-top-right-radius: 24px; z-index: 100;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 700;
-        }
-        .nav-item.active { color: var(--accent-color); }
-        .nav-icon { font-size: 22px; }
-
-        /* MODALS */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
-            display: none; justify-content: center; align-items: center; z-index: 200; backdrop-filter: blur(4px);
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-content {
-            background: var(--card-bg); width: 90%; max-width: 400px; border-radius: 20px; padding: 20px;
-            box-shadow: var(--shadow-lg); display: flex; flex-direction: column; gap: 16px;
-        }
-        .modal-header { font-size: 18px; font-weight: 800; color: var(--text-main); display: flex; justify-content: space-between; align-items: center;}
-        .close-btn { background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer; }
-        .modal-body { display: flex; flex-direction: column; gap: 12px; }
-        .modal-input, .modal-select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 14px; outline: none; }
-        .modal-input:focus, .modal-select:focus { border-color: var(--accent-color); }
-        .primary-btn { background: var(--accent-color); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
-        
-        /* AI RESPONSE BOX */
-        .ai-response {
-            background: #f0fdf4; border: 1px solid #bbf7d0; padding: 16px; border-radius: 12px;
-            font-size: 13px; color: #166534; line-height: 1.5; display: none; margin-top: 10px; font-weight: 500;
-        }
-        
-        .loading-spinner { display: none; text-align: center; color: var(--accent-color); font-weight: 700; font-size: 14px; margin: 10px 0;}
-
-        /* FOOTER */
-        footer { padding: 10px; text-align: center; font-size: 11px; color: #94a3b8; }
-        .footer-brand { font-weight: 700; color: #64748b; }
-    </style>
+    /* ========================================= */
+    /* 📱 MOBİL UYUM (Medya Sorguları)           */
+    /* ========================================= */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px; /* Mobilde kenar boşluklarını daralt */
+        align-items: flex-start; /* Mobilde ortalamak yerine yukarıdan başlat */
+      }
+      
+      .main-wrapper {
+        gap: 15px; /* Kartlar arası boşluğu azalt */
+      }
+      
+      .card {
+        padding: 25px 20px; /* İç boşlukları mobilde daraltarak yer kazandır */
+        min-width: 100%; /* Tam genişlik kaplamasını sağla */
+        border-radius: 20px;
+      }
+      
+      h2 {
+        font-size: 20px; /* Başlıkları küçült */
+      }
+      
+      p.subtitle {
+        font-size: 13px;
+        margin-bottom: 20px;
+      }
+      
+      .upload-area {
+        padding: 30px 15px;
+        margin-bottom: 20px;
+      }
+      
+      .upload-icon {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .upload-text {
+        font-size: 14px;
+      }
+      
+      .btn {
+        padding: 14px 20px;
+        font-size: 15px;
+      }
+      
+      .live-screen-box {
+        height: 160px; /* Canlı önizleme kutusunu mobilde biraz daralt */
+      }
+    }
+  </style>
 </head>
 <body>
 
-<div class="mobile-container">
-    <header>
-        <div class="header-top">
-            <span class="brand-title">Spatial interface design</span>
-        </div>
-        <div class="brand-row">
-            <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                <line x1="5" y1="9" x2="19" y2="9"></line>
-                <line x1="9" y1="13" x2="9" y2="16"></line>
-                <line x1="9" y1="4" x2="9" y2="7"></line>
-            </svg>
-            <h1 class="app-name">FRIGETON</h1>
-        </div>
-        
-        <div class="summary-bar">
-            <div class="summary-item">
-                <div id="stat-total" class="summary-val total">0</div>
-                <div class="summary-lbl">Toplam Ürün</div>
-            </div>
-            <div class="summary-item">
-                <div id="stat-missing" class="summary-val missing">0</div>
-                <div class="summary-lbl">Biten Ürün</div>
-            </div>
-            <div class="summary-item">
-                <div id="stat-expired" class="summary-val expired">0</div>
-                <div class="summary-lbl">Bozuk/Kritik</div>
-            </div>
-        </div>
-    </header>
+  <div class="main-wrapper">
+    <div class="card">
+      <h2>Yayın Merkezi</h2>
+      <p class="subtitle">Seçilen görsel anında tüm ekranlara iletilecek.</p>
+      
+      <div class="upload-area">
+        <svg class="upload-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.36 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+        </svg>
+        <div class="upload-text" id="uploadText">Görsel Seçmek İçin Tıkla</div>
+        <div class="upload-subtext" id="uploadSubtext">veya sürükleyip bırak (Max 5MB)</div>
+        <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="resmiOnizle()" />
+      </div>
 
-    <div class="scroll-area">
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Ürün adı ara..." oninput="filterProducts()">
-        </div>
-
-        <div class="categories-wrapper" id="categories-tabs">
-            <div class="category-tab active" onclick="switchCategory('all', this)">Tümü</div>
-            <div class="category-tab" onclick="switchCategory('sebze', this)">Sebzeler</div>
-            <div class="category-tab" onclick="switchCategory('meyve', this)">Meyveler</div>
-            <div class="category-tab" onclick="switchCategory('sut-sarkuteri', this)">Süt & Şarküteri</div>
-            <div class="category-tab" onclick="switchCategory('icecek', this)">İçecekler</div>
-            <div class="category-tab" onclick="switchCategory('bakliyat-temel', this)">Temel Gıda</div>
-        </div>
-
-        <!-- YENİ ÜRÜN EKLE BUTONU (Sadece Düzenle Modunda Görünür) -->
-        <button id="add-btn-container" class="add-product-btn" style="display: none;" onclick="openAddModal()">
-            <span>➕</span> Yeni Ürün Ekle
-        </button>
-
-        <div class="product-list" id="product-container">
-            <!-- JS ile dolacak -->
-        </div>
-        <footer>
-            <p><span class="footer-brand">Create by Tonoz</span> &copy; 2026</p>
-        </footer>
+      <div id="preview-container">
+        <img id="preview" alt="Önizleme" />
+      </div>
+      
+      <button onclick="resmiGonder()" class="btn btn-send" id="sendBtn">Yeni Resmi Yayınla 🚀</button>
     </div>
 
-    <!-- ALT NAVİGASYON (BOTTOM NAV) -->
-    <div class="bottom-nav">
-        <div class="nav-item active" id="nav-home" onclick="setMode('home')">
-            <span class="nav-icon">🏠</span>
-            <span>Ana Sayfa</span>
-        </div>
-        <div class="nav-item" id="nav-edit" onclick="setMode('edit')">
-            <span class="nav-icon">⚙️</span>
-            <span>Düzenle</span>
-        </div>
-        <div class="nav-item" onclick="openAIModal()">
-            <span class="nav-icon">🤖</span>
-            <span>AI Şef</span>
-        </div>
+    <div class="card">
+      <h2><span class="status-dot" id="statusDot"></span><span id="statusTitle">Canlı Ekran</span></h2>
+      <p class="subtitle" id="last-update-text">Şu an ekranda bu görsel var.</p>
+      
+      <div class="live-screen-box">
+        <img id="live-screen-img" alt="Canlı Ekran" />
+      </div>
+
+      <button onclick="yayinDurumunuDegistir(false)" class="btn btn-stop" id="stopBtn">🛑 Yayını Herkesten Gizle (Kapat)</button>
+      <button onclick="yayinDurumunuDegistir(true)" class="btn btn-start" id="startBtn">✅ Resmi Yeniden Göster (Aç)</button>
     </div>
-</div>
+  </div>
 
-<!-- MODAL: YENİ ÜRÜN EKLE -->
-<div class="modal-overlay" id="add-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span>Yeni Ürün Ekle</span>
-            <button class="close-btn" onclick="closeAddModal()">×</button>
-        </div>
-        <div class="modal-body">
-            <input type="text" id="new-prod-name" class="modal-input" placeholder="Ürün Adı (Örn: Çikolata)">
-            <select id="new-prod-cat" class="modal-select">
-                <option value="sebze">Sebzeler</option>
-                <option value="meyve">Meyveler</option>
-                <option value="sut-sarkuteri">Süt & Şarküteri</option>
-                <option value="icecek">İçecekler</option>
-                <option value="bakliyat-temel">Temel Gıda</option>
-            </select>
-            <button class="primary-btn" onclick="saveNewProduct()">Kaydet ve Listeye Ekle</button>
-        </div>
-    </div>
-</div>
+  <script>
+    const firebaseUrl = "https://ekranpanosu-da617-default-rtdb.firebaseio.com/current_image.json";
 
-<!-- MODAL: AI ŞEF -->
-<div class="modal-overlay" id="ai-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span>🤖 Frigeton AI Şef</span>
-            <button class="close-btn" onclick="closeAIModal()">×</button>
-        </div>
-        <div class="modal-body">
-            <p style="font-size: 13px; color: #64748b;">Dolabınızdaki mevcut malzemelerle yapay zekadan tarif önerisi alın.</p>
-            <select id="meal-type" class="modal-select">
-                <option value="Kahvaltı">🍳 Sabah / Kahvaltı</option>
-                <option value="Öğle Yemeği">🍲 Öğle Yemeği</option>
-                <option value="Akşam Yemeği">🍽️ Akşam Yemeği</option>
-                <option value="Tatlı/Atıştırmalık">🍰 Tatlı / Atıştırmalık</option>
-            </select>
-            <button class="primary-btn" onclick="getAISuggestion()">Öneri İstiyorum!</button>
-            
-            <div class="loading-spinner" id="ai-loading">Yapay Zeka Analiz Ediyor... ⏳</div>
-            <div class="ai-response" id="ai-response-box"></div>
-        </div>
-    </div>
-</div>
+    // Panel açıldığında veritabanındaki son durumu ÇEK
+    window.addEventListener('DOMContentLoaded', () => {
+      fetch(firebaseUrl + "?t=" + new Date().getTime())
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.imageUrl) {
+            document.getElementById("live-screen-img").src = data.imageUrl;
+            document.getElementById("live-screen-img").style.display = "block";
+            arayuzuGuncelle(data.isActive, data.time);
+          }
+        })
+        .catch(err => console.error("Firebase bağlantı hatası", err));
+    });
 
-<script>
-    // VARSAYILAN BAŞLANGIÇ LİSTESİ (Eğer hafızada yoksa bu yüklenir)
-    const defaultProducts = [
-        { id: 1, name: "Domates", category: "sebze", status: "mevcut", skt: "", sktActive: false },
-        { id: 2, name: "Salatalık", category: "sebze", status: "mevcut", skt: "", sktActive: false },
-        { id: 3, name: "Tam Yağlı Süt", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-02", sktActive: true },
-        { id: 4, name: "Organik Yumurta", category: "sut-sarkuteri", status: "mevcut", skt: "2026-07-10", sktActive: true },
-        { id: 5, name: "Kola 1L", category: "icecek", status: "bitti", skt: "", sktActive: false },
-        { id: 6, name: "Makarna", category: "bakliyat-temel", status: "mevcut", skt: "", sktActive: false }
-    ];
+    // Butonları ve metinleri duruma göre değiştiren yardımcı fonksiyon
+    function arayuzuGuncelle(isActive, time) {
+      const isOnline = (isActive !== false); // Tanımsızsa da true kabul et
+      
+      document.getElementById("stopBtn").style.display = isOnline ? "block" : "none";
+      document.getElementById("startBtn").style.display = isOnline ? "none" : "block";
+      
+      const dot = document.getElementById("statusDot");
+      const title = document.getElementById("statusTitle");
+      
+      if (isOnline) {
+        dot.className = "status-dot";
+        title.innerText = "Canlı Ekran (Aktif)";
+        document.getElementById("live-screen-img").style.opacity = "1";
+      } else {
+        dot.className = "status-dot offline";
+        title.innerText = "Yayın Kapalı";
+        document.getElementById("live-screen-img").style.opacity = "0.3"; // Gizliyken resmi soluk göster
+      }
 
-    // LocalStorage'dan veriyi al, yoksa varsayılanı kullan
-    let products = JSON.parse(localStorage.getItem('frigeton_data')) || defaultProducts;
-    
-    function saveData() {
-        localStorage.setItem('frigeton_data', JSON.stringify(products));
-        updateStats();
+      if (time) {
+        const tarih = new Date(time);
+        document.getElementById("last-update-text").innerText = "Son işlem: " + tarih.toLocaleTimeString();
+      }
     }
 
-    let currentCategory = "all";
-    let isEditMode = false;
-    const today = new Date("2026-06-28"); 
-
-    function initApp() {
-        renderProducts();
-        updateStats();
-    }
-
-    // MOD SEÇİMİ (Ana Sayfa vs Düzenle)
-    function setMode(mode) {
-        isEditMode = (mode === 'edit');
-        document.getElementById('nav-home').classList.toggle('active', !isEditMode);
-        document.getElementById('nav-edit').classList.toggle('active', isEditMode);
-        document.getElementById('add-btn-container').style.display = isEditMode ? 'flex' : 'none';
-        renderProducts();
-    }
-
-    function renderProducts() {
-        const container = document.getElementById("product-container");
-        container.innerHTML = "";
-        const searchVal = document.getElementById("search-input").value.toLowerCase();
-
-        products.forEach(item => {
-            if (currentCategory !== "all" && item.category !== currentCategory) return;
-            if (searchVal && !item.name.toLowerCase().includes(searchVal)) return;
-
-            let isExpired = false;
-            if (item.sktActive && item.skt) {
-                const itemDate = new Date(item.skt);
-                if (itemDate < today && item.status === "mevcut") isExpired = true;
-            }
-
-            const card = document.createElement("div");
-            card.className = `product-card ${item.status === 'bitti' ? 'status-bitti' : ''} ${isExpired ? 'is-expired' : ''}`;
-            
-            // DÜZENLEME MODU AÇIKSA KART İÇERİĞİ DEĞİŞİR
-            if (isEditMode) {
-                card.innerHTML = `
-                    <div class="card-main">
-                        <div class="product-info">
-                            <span class="product-name">${item.name}</span>
-                            <span class="product-cat">${getCategoryName(item.category)}</span>
-                        </div>
-                        <button class="delete-btn" onclick="deleteProduct(${item.id})">🗑️ Sil</button>
-                    </div>
-                `;
-            } else {
-                // NORMAL MOD
-                card.innerHTML = `
-                    <div class="card-main">
-                        <div class="product-info">
-                            <span class="product-name">${item.name}</span>
-                            <span class="product-cat">${getCategoryName(item.category)}</span>
-                        </div>
-                        <div class="status-toggle-group">
-                            <button class="toggle-btn ${item.status === 'mevcut' ? 'active-mevcut' : ''}" onclick="setStatus(${item.id}, 'mevcut')">Mevcut</button>
-                            <button class="toggle-btn ${item.status === 'bitti' ? 'active-bitti' : ''}" onclick="setStatus(${item.id}, 'bitti')">Bitti</button>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="skt-container">
-                            <span class="skt-label">SKT:</span>
-                            <label class="switch">
-                                <input type="checkbox" onchange="toggleSKT(${item.id}, this.checked)" ${item.sktActive ? 'checked' : ''}>
-                                <span class="slider"></span>
-                            </label>
-                            <input type="date" class="skt-input ${item.sktActive ? 'show' : ''}" value="${item.skt}" onchange="updateSKT(${item.id}, this.value)">
-                        </div>
-                        <div class="expiry-alert">⚠️ Bozuldu!</div>
-                    </div>
-                `;
-            }
-            container.appendChild(card);
-        });
-    }
-
-    // YENİ ÜRÜN EKLEME İŞLEMLERİ
-    function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
-    function closeAddModal() { 
-        document.getElementById('add-modal').classList.remove('active'); 
-        document.getElementById('new-prod-name').value = '';
-    }
-    
-    function saveNewProduct() {
-        const name = document.getElementById('new-prod-name').value.trim();
-        const cat = document.getElementById('new-prod-cat').value;
-        if (!name) return alert("Lütfen bir ürün adı girin!");
-        
-        const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-        
-        products.unshift({
-            id: newId, name: name, category: cat, status: "mevcut", skt: "", sktActive: false
-        });
-        
-        saveData();
-        renderProducts();
-        closeAddModal();
-    }
-
-    // ÜRÜN SİLME
-    function deleteProduct(id) {
-        if(confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
-            products = products.filter(p => p.id !== id);
-            saveData();
-            renderProducts();
+    // Yayını Aç/Kapat Butonlarının Görevi
+    function yayinDurumunuDegistir(durum) {
+      const yeniZaman = Date.now();
+      
+      fetch(firebaseUrl, {
+        method: "PATCH", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: durum, time: yeniZaman })
+      })
+      .then(response => {
+        if (response.ok) {
+          arayuzuGuncelle(durum, yeniZaman);
         }
+      });
     }
 
-    // AI ŞEF İŞLEMLERİ
-    function openAIModal() { 
-        document.getElementById('ai-modal').classList.add('active'); 
-        document.getElementById('ai-response-box').style.display = 'none';
+    function resmiOnizle() {
+      const fileInput = document.getElementById("imageInput");
+      const previewContainer = document.getElementById("preview-container");
+      
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById("preview").src = e.target.result;
+          previewContainer.style.display = "block";
+          document.getElementById("uploadText").innerText = "Farklı bir görsel seç";
+          document.getElementById("uploadSubtext").innerText = fileInput.files[0].name;
+        }
+        reader.readAsDataURL(fileInput.files[0]);
+      }
     }
-    function closeAIModal() { document.getElementById('ai-modal').classList.remove('active'); }
-    
-    function getAISuggestion() {
-        const mealType = document.getElementById('meal-type').value;
-        const availableItems = products.filter(p => p.status === 'mevcut').map(p => p.name);
+
+    function resmiGonder() {
+      const fileInput = document.getElementById("imageInput");
+      const sendBtn = document.getElementById("sendBtn");
+
+      if (fileInput.files.length === 0) {
+        alert("Lütfen önce bir resim seçin!");
+        return;
+      }
+      
+      sendBtn.innerText = "Gönderiliyor... ⏳";
+      sendBtn.disabled = true;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Image = e.target.result;
+        const suAnkiZaman = Date.now();
         
-        const loading = document.getElementById('ai-loading');
-        const responseBox = document.getElementById('ai-response-box');
-        
-        responseBox.style.display = 'none';
-        loading.style.display = 'block';
-
-        // ESP32'de buraya gerçek API (Fetch) isteği gelecek. Şu an simüle ediyoruz.
-        setTimeout(() => {
-            loading.style.display = 'none';
-            responseBox.style.display = 'block';
+        fetch(firebaseUrl, {
+          method: "PUT", 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            imageUrl: base64Image,
+            time: suAnkiZaman,
+            isActive: true 
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            document.getElementById("live-screen-img").src = base64Image;
+            document.getElementById("live-screen-img").style.display = "block";
             
-            if(availableItems.length < 2) {
-                responseBox.innerHTML = `⚠️ Dolabınızda yeterli malzeme yok. Markete gitme vakti gelmiş olabilir!`;
-                return;
-            }
-
-            // Basit Simülasyon Mantığı
-            const itemsText = availableItems.slice(0, 5).join(", ") + (availableItems.length > 5 ? " ve daha fazlası" : "");
+            arayuzuGuncelle(true, suAnkiZaman);
             
-            responseBox.innerHTML = `
-                <b>${mealType} Önerisi:</b><br><br>
-                Dolabınızdaki <b>${itemsText}</b> kullanılarak oluşturulan şefin tavsiyesi:<br><br>
-                <i>"Mevcut malzemeleriniz ${mealType} için oldukça uygun! Yaratıcı bir tabak hazırlayabilir, eksik olanları 'Bitenler' listesine ekleyebilirsiniz."</i><br><br>
-                <small style="color:var(--text-muted);">(Not: Bu bir simülasyondur. Gerçek projede buraya Gemini AI veya ChatGPT API bağlanarak gerçek yemek tarifleri çekilecektir.)</small>
-            `;
-        }, 1500); // 1.5 saniye bekleme efekti
+            fileInput.value = "";
+            document.getElementById("preview-container").style.display = "none";
+            document.getElementById("uploadText").innerText = "Görsel Seçmek İçin Tıkla";
+          }
+        })
+        .finally(() => {
+          sendBtn.innerText = "Yeni Resmi Yayınla 🚀";
+          sendBtn.disabled = false;
+        });
+      };
+      reader.readAsDataURL(fileInput.files[0]);
     }
-
-    function getCategoryName(cat) {
-        const names = { "sebze": "Sebzeler", "meyve": "Meyveler", "sut-sarkuteri": "Süt & Şarküteri", "icecek": "İçecekler", "bakliyat-temel": "Temel Gıda" };
-        return names[cat] || cat;
-    }
-    function setStatus(id, newStatus) { const item = products.find(p => p.id === id); if (item) { item.status = newStatus; saveData(); renderProducts(); } }
-    function toggleSKT(id, isChecked) { const item = products.find(p => p.id === id); if (item) { item.sktActive = isChecked; if (!isChecked) item.skt = ""; saveData(); renderProducts(); } }
-    function updateSKT(id, newDate) { const item = products.find(p => p.id === id); if (item) { item.skt = newDate; saveData(); renderProducts(); } }
-    function switchCategory(cat, element) { currentCategory = cat; document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active')); element.classList.add('active'); renderProducts(); }
-    function filterProducts() { renderProducts(); }
-    function updateStats() {
-        const total = products.length;
-        const missing = products.filter(p => p.status === 'bitti').length;
-        let expired = 0;
-        products.forEach(p => { if (p.sktActive && p.skt && p.status === 'mevcut') { if (new Date(p.skt) < today) expired++; } });
-        document.getElementById("stat-total").innerText = total;
-        document.getElementById("stat-missing").innerText = missing;
-        document.getElementById("stat-expired").innerText = expired;
-    }
-
-    window.onload = initApp;
-</script>
-
+  </script>
 </body>
 </html>
